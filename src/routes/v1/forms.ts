@@ -7,6 +7,14 @@ const router: Router = express.Router();
 // Sample data (can be replaced with a database)
 let formData: { name: string; email: string }[] = [];
 
+router.get("/", (req: Request, res: Response) => {
+  res.json({
+    successful: true,
+    message: "Forms retrieved successfully!",
+    data: [],
+  });
+});
+
 router.get("/:id", (req: Request, res: Response) => {
   const formId = req.params.id;
   res.json({
