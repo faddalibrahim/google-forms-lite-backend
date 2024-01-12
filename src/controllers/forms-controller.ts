@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-const getAllForms = (req: Request, res: Response) => {
+export const getAllForms = (req: Request, res: Response) => {
   res.json({
     successful: true,
     message: "Forms retrieved successfully!",
@@ -9,7 +9,7 @@ const getAllForms = (req: Request, res: Response) => {
 };
 
 // get single form
-const getForm = (req: Request, res: Response) => {
+export const getForm = (req: Request, res: Response) => {
   res.json({
     successful: true,
     message: "Form retrieved successfully!",
@@ -18,7 +18,7 @@ const getForm = (req: Request, res: Response) => {
 };
 
 // create form
-const createForm = (req: Request, res: Response) => {
+export const createForm = (req: Request, res: Response) => {
   const { form } = req.body;
   if (!form) {
     return res
@@ -29,14 +29,13 @@ const createForm = (req: Request, res: Response) => {
 };
 
 //delete form
-
-const deleteForm = (req: Request, res: Response) => {
+export const deleteForm = (req: Request, res: Response) => {
   console.log(req.params.id);
   res.json({ successful: true, message: "Form deleted successfully!" });
 };
 
 // update form
-const updateForm = (req: Request, res: Response) => {
+export const updateForm = (req: Request, res: Response) => {
   const { id } = req.params;
   const { form } = req.body;
   if (!form) {
@@ -46,5 +45,3 @@ const updateForm = (req: Request, res: Response) => {
   }
   res.json({ successful: true, message: "Form updated successfully!" });
 };
-
-export { getAllForms, getForm, createForm, deleteForm, updateForm };

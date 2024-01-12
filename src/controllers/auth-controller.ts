@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-const register = (req: Request, res: Response) => {
+export const register = (req: Request, res: Response) => {
   const { email, username, password } = req.body;
 
   // Perform registration logic (validate inputs, save to database, etc.)
@@ -10,7 +10,7 @@ const register = (req: Request, res: Response) => {
   res.json({ successful: true, message: "Registration successful" });
 };
 
-const login = (req: Request, res: Response) => {
+export const login = (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   // Perform registration logic (validate inputs, save to database, etc.)
@@ -19,5 +19,3 @@ const login = (req: Request, res: Response) => {
 
   res.json({ successful: true, message: "Login successful" });
 };
-
-export { register, login };
