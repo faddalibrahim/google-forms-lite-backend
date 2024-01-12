@@ -1,25 +1,9 @@
-// server.ts
-import express, { Router, Request, Response } from "express";
+import express, { Router } from "express";
+import * as authController from "../../controllers/auth-controller";
+
 const router: Router = express.Router();
 
-router.post("/register", (req: Request, res: Response) => {
-  const { email, username, password } = req.body;
-
-  // Perform registration logic (validate inputs, save to database, etc.)
-  // For simplicity, just log the received data in this example
-  console.log("Received registration data:", { email, username, password });
-
-  res.json({ successful: true, message: "Registration successful" });
-});
-
-router.post("/login", (req: Request, res: Response) => {
-  const { email, password } = req.body;
-
-  // Perform registration logic (validate inputs, save to database, etc.)
-  // For simplicity, just log the received data in this example
-  console.log("Login details:", { email, password });
-
-  res.json({ successful: true, message: "Login successful" });
-});
+router.post("/register", authController.register);
+router.post("/login", authController.login);
 
 export default router;
