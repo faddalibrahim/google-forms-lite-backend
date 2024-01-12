@@ -2,6 +2,7 @@ import express, { Router, Request, Response } from "express";
 import usersRouter from "./v1/users";
 import formsRotuer from "./v1/forms";
 import formResponsesRouter from "./v1/form-responses";
+import authRouter from "./v1/auth";
 
 const v1Router: Router = express.Router();
 
@@ -12,6 +13,7 @@ v1Router.use((req: Request, res: Response, next) => {
 });
 
 // Subroutes for API version 1
+v1Router.use("/auth", authRouter);
 v1Router.use("/users", usersRouter);
 v1Router.use("/forms", formsRotuer);
 v1Router.use("/form-responses", formResponsesRouter);
