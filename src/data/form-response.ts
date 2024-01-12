@@ -1,6 +1,5 @@
-const form = {
-  name: "Example Form 1",
-  description: "Hey this is a form to collect blah blah",
+const formResponse = {
+  id: "Form 1 ID",
   sections: [
     {
       id: "Section 1 ID",
@@ -11,35 +10,35 @@ const form = {
           id: "Question 1 ID",
           question: "What is your level of education",
           type: "radio",
-          required: true,
           options: [
             {
               id: "Option 1 ID",
               option: "High School",
             },
           ],
+          answer: "Option 1 ID",
         },
         {
           id: "Question 2 ID",
           question: "What is name",
           type: "text",
-          required: true,
+          answer: "Hello world",
         },
         {
           id: "Question 3 ID",
           question: "Write a Bio",
           type: "textarea",
-          required: true,
+          answer: "This is a bio",
         },
         {
           id: "Question 3 ID",
           question: "Date of birth",
           type: "date",
-          required: true,
+          answer: "21/05/31",
         },
       ],
     },
   ],
 };
 
-export default form;
+export default formResponse;
