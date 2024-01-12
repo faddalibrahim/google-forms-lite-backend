@@ -1,54 +1,12 @@
 import express, { Router, Request, Response } from "express";
+import * as formResponsesController from "../../controllers/form-responses-controller";
 
 const router: Router = express.Router();
 
-router.get("/", (req: Request, res: Response) => {
-  console.log(req.params.id);
-  res.json({
-    successful: true,
-    message: "Form responses retrieved successfully!",
-    data: [],
-  });
-});
-
-router.get("/:id", (req: Request, res: Response) => {
-  res.json({
-    successful: true,
-    message: "Form response retrieved successfully!",
-    data: {},
-  });
-});
-
-router.post("/", (req: Request, res: Response) => {
-  const { formResponse } = req.body;
-
-  if (!formResponse) {
-    return res
-      .status(400)
-      .json({ successful: false, error: "No form entry received" });
-  }
-
-  res.json({
-    successful: true,
-    message: "Form response created successfully!",
-    data: {},
-  });
-});
-
-router.put("/:id", (req: Request, res: Response) => {
-  const { formResponse } = req.body;
-
-  if (!formResponse) {
-    return res
-      .status(400)
-      .json({ successful: false, error: "No form entry received" });
-  }
-
-  res.json({
-    successful: true,
-    message: "Form response updated successfully!",
-    data: {},
-  });
-});
+router.get("/", formResponsesController.getAllFormResponses);
+router.get("/:id", formResponsesController.getFormResponse);
+router.post("/", formResponsesController.createFormResponse);
+router.put("/:id", formResponsesController.updateFormResponse);
+router.delete("/:id", formResponsesController.deleteFormResponse);
 
 export default router;
