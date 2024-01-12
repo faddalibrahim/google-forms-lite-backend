@@ -1,6 +1,8 @@
 import express, { Request, Response } from "express";
 import v1Router from "./routes/v1";
+import dbConnection from "./config/db-config";
 
+dbConnection();
 const app = express();
 app.use(express.json());
 
