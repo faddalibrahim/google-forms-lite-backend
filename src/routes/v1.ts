@@ -1,4 +1,4 @@
-import express, { Router } from "express";
+import express, { Router, Request, Response } from "express";
 import usersRouter from "./v1/users";
 import formsRotuer from "./v1/forms";
 import formResponsesRouter from "./v1/form-responses";
@@ -6,7 +6,7 @@ import formResponsesRouter from "./v1/form-responses";
 const v1Router: Router = express.Router();
 
 // Middleware for API version 1
-v1Router.use((req, res, next) => {
+v1Router.use((req: Request, res: Response, next) => {
   console.log("API Version: v1");
   next();
 });
