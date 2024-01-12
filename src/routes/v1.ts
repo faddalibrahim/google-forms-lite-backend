@@ -14,6 +14,6 @@ v1Router.use((req: Request, res: Response, next) => {
 // Subroutes for API version 1
 v1Router.use("/users", usersRouter);
 v1Router.use("/forms", formsRotuer);
-v1Router.use("/form-reponses", formResponsesRouter);
+v1Router.use("/form-responses", formResponsesRouter);
 
 export default v1Router;
