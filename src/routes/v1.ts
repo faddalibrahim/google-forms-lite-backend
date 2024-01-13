@@ -1,8 +1,9 @@
 import express, { Router, Request, Response } from "express";
-import usersRouter from "./v1/users";
-import formsRotuer from "./v1/forms";
-import formResponsesRouter from "./v1/form-responses";
-import authRouter from "./v1/auth";
+import usersRouter from "./v1/users.route";
+import formsRotuer from "./v1/forms.route";
+import formResponsesRouter from "./v1/form-responses.route";
+import authRouter from "./v1/auth.route";
+import formContentsRouter from "./v1/form-contents.route";
 
 const v1Router: Router = express.Router();
 
@@ -16,6 +17,7 @@ v1Router.use((req: Request, res: Response, next) => {
 v1Router.use("/auth", authRouter);
 v1Router.use("/users", usersRouter);
 v1Router.use("/forms", formsRotuer);
+v1Router.use("/form-contents", formContentsRouter);
 v1Router.use("/form-responses", formResponsesRouter);
 
 export default v1Router;
