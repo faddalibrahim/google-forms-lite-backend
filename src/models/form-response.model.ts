@@ -1,16 +1,12 @@
 import mongoose, { Schema, Types, Document } from "mongoose";
 
-interface IFormContent extends Document {
+interface IFormResponse extends Document {
   _formId: { type: typeof Types.ObjectId; required: boolean };
-  title: string;
-  description: string;
   sections: ISection[];
 }
 
 interface ISection {
   id: string;
-  title: string;
-  subtitle: string;
   questions: IQuestion[];
 }
 
@@ -18,7 +14,6 @@ interface IQuestion {
   id: string;
   question: string;
   type: string; // radio, checkbox, text, textarea, date etc
-  required: boolean;
   options?: IOption[]; // only for radio and checkbox
 }
 
@@ -27,16 +22,14 @@ interface IOption {
   option: string;
 }
 
-const formContentSchema = new Schema<IFormContent>({
+const formResponseSchema = new Schema<IFormResponse>({
   _formId: { type: Types.ObjectId, required: true },
-  title: { type: String, required: true },
-  description: { type: String, required: true },
   sections: { type: Schema.Types.Mixed, required: true },
 });
 
-const FormContent = mongoose.model<IFormContent>(
-  "FormContent",
-  formContentSchema
+const FormResponse = mongoose.model<IFormResponse>(
+  "FormResponse",
+  formResponseSchema
 );
 
-export default FormContent;
+export default FormResponse;
