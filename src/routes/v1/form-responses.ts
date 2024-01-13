@@ -1,5 +1,5 @@
 import express, { Router, Request, Response } from "express";
-import * as formResponsesController from "../../controllers/form-responses-controller";
+import * as formResponsesController from "../../controllers/form-response.controller";
 
 const router: Router = express.Router();
 

@@ -1,6 +1,6 @@
 // src/routes/formRouter.ts
 import express, { Router, Request, Response } from "express";
-import * as formsController from "../../controllers/forms-controller";
+import * as formsController from "../../controllers/form.controller";
 
 const router: Router = express.Router();
 

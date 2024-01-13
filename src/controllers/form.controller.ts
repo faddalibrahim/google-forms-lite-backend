@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import Form from "../models/form-model";
+import Form from "../models/form.model";
 
 export const getAllForms = (req: Request, res: Response) => {
   res.json({
