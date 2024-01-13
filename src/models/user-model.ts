@@ -16,27 +16,6 @@ interface IUser extends Document {
   salt: string;
 }
 
-const User = mongoose.model<IUser>("user", userSchema);
-
-// // Connect to MongoDB
-// mongoose.connect("mongodb://localhost:27017/your-database", {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
-
-// const db = mongoose.connection;
-
-// db.on("error", console.error.bind(console, "Connection error:"));
-// db.once("open", () => {
-//   console.log("Connected to the database!");
-// });
-
-// // Example usage
-// const newUser = new User({ name: "John Doe", age: 25 });
-
-// newUser.save((err, user) => {
-//   if (err) return console.error(err);
-//   console.log("User saved:", user);
-// });
+const User = mongoose.model<IUser>("User", userSchema);
 
 export default User;
