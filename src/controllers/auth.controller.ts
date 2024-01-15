@@ -33,7 +33,6 @@ export const register = async (req: Request, res: Response) => {
       username,
       email,
       password,
-      salt: "1234567890",
     });
 
     res.status(201).json({
