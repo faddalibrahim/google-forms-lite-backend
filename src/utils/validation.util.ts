@@ -14,6 +14,11 @@ export const hasMissingFields = (
   return expectedFields.some((field) => !(field in data) || !data[field]);
 };
 
+export const emailInvalid = (email: string) => {
+  const regex = new RegExp(`^[^\s@]+@[^\s@]+\.[^\s@]+$`);
+  return !regex.test(email);
+};
+
 export const passwordInvalid = (password: string, minLength: number) => {
   const regex = new RegExp(
     `^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{${minLength},}$`
