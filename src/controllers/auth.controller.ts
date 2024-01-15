@@ -1,25 +1,28 @@
 import { Request, Response } from "express";
 import * as AuthService from "../services/auth.service";
 import {
-  hasMissingFields,
   passwordsDontMatch,
   parseMongooseValidationErrors,
+  getMissingFields,
 } from "../utils/validation.util";
 
 export const register = async (req: Request, res: Response) => {
   const { username, email, password, repeatPassword } = req.body;
 
-  if (
-    hasMissingFields(req.body, [
-      "username",
-      "email",
-      "password",
-      "repeatPassword",
-    ])
-  ) {
-    return res
-      .status(400)
-      .json({ successful: false, message: "Missing required fields" });
+  let missingFields = getMissingFields(req.body, [
+    "username",
+    "email",
+    "password",
+    "repeatPassword",
+  ]);
+
+  if (missingFields.length > 0) {
+    return res.status(400).json({
+      successful: false,
+      errors: missingFields.map((field) => ({
+        [field]: `${field} is required`,
+      })),
+    });
   }
 
   if (passwordsDontMatch(password, repeatPassword)) {
