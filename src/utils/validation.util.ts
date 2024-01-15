@@ -1,17 +1,19 @@
 /**
- * Checks if any of the expected fields are missing in the data object.
- * @param data - The data object to check.
- * @param expectedFields - The list of expected field names.
- * @returns {boolean} - True if any expected field is missing, false otherwise.
+ * Returns an array of missing fields from the provided data object.
+ *
+ * @param data - The data object to check for missing fields.
+ * @param expectedFields - An array of expected field names.
+ * @returns An array of missing fields.
  *
  * !NOTE: This function assumes that all values in the data object are strings.
  * !NOTE: And hence may not work for nested objects and booleans
  */
-export const hasMissingFields = (
+export const getMissingFields = (
   data: { [key: string]: unknown },
   expectedFields: string[]
-): boolean => {
-  return expectedFields.some((field) => !(field in data) || !data[field]);
+) => {
+  // Filter the expected fields for those that are not present in the data object or have falsy values.
+  return expectedFields.filter((field) => !(field in data) || !data[field]);
 };
 
 export const emailInvalid = (email: string) => {
@@ -33,21 +35,20 @@ export const passwordsDontMatch = (
   return password !== repeatPassword;
 };
 
+export const parseMongooseValidationErrors = (error: any) => {
+  if (error.code === 11000) {
+    // Extract the key 'username' from keyPattern and store it as a string variable
+    const errorKey = Object.keys(error.keyPattern)[0];
+    return {
+      [errorKey]: `${errorKey} already exists`,
+    };
+  }
 
- export const parseMongooseValidationErrors = (error: any) => {
-   if (error.code === 11000) {
-     // Extract the key 'username' from keyPattern and store it as a string variable
-     const errorKey = Object.keys(error.keyPattern)[0];
-     return {
-       [errorKey]: `${errorKey} already exists`,
-     };
-   }
+  let allErrors = Object.entries(error?.errors ?? {}).map(
+    ([error, value]: any) => ({
+      [error]: value?.message,
+    })
+  );
 
-   let allErrors = Object.entries(error?.errors ?? {}).map(
-     ([error, value]: any) => ({
-       [error]: value?.message,
-     })
-   );
-
-   return allErrors;
- };
+  return allErrors;
+};
