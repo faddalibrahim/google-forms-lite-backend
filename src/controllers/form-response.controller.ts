@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import FormResponse from "../models/form-response.model";
 
 export const getAllFormResponses = (req: Request, res: Response) => {
   res.json({
@@ -24,6 +25,9 @@ export const createFormResponse = (req: Request, res: Response) => {
       .status(400)
       .json({ successful: false, error: "No form entry received" });
   }
+
+  const newFormResponse = new FormResponse(formResponse);
+  newFormResponse.save();
 
   res.json({
     successful: true,

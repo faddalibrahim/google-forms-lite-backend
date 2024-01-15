@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import FormContent from "../models/form-content.model";
 
 export const getFormContent = (req: Request, res: Response) => {
   res.json({
@@ -9,6 +10,22 @@ export const getFormContent = (req: Request, res: Response) => {
 };
 
 export const updateFormContent = (req: Request, res: Response) => {
+  FormContent.findOneAndUpdate({ _id: req.params.id }, req.body).then(
+    (formContent) => {
+      if (!formContent) {
+        return res
+          .status(400)
+          .json({ successful: false, error: "No form content found" });
+      } else {
+        res.json({
+          successful: true,
+          message: "Form content updated successfully!",
+          data: formContent,
+        });
+      }
+    }
+  );
+
   res.json({
     successful: true,
     message: "Form content updated successfully!",
@@ -32,6 +49,11 @@ export const createFormContent = (req: Request, res: Response) => {
       .status(400)
       .json({ successful: false, error: "No form content received" });
   }
+
+  //   const newFormContent = new FormContent(formContent);
+  //   newFormContent.save();
+
+  FormContent.create(formContent);
 
   res.json({
     successful: true,
