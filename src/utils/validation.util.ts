@@ -32,3 +32,22 @@ export const passwordsDontMatch = (
 ) => {
   return password !== repeatPassword;
 };
+
+
+ export const parseMongooseValidationErrors = (error: any) => {
+   if (error.code === 11000) {
+     // Extract the key 'username' from keyPattern and store it as a string variable
+     const errorKey = Object.keys(error.keyPattern)[0];
+     return {
+       [errorKey]: `${errorKey} already exists`,
+     };
+   }
+
+   let allErrors = Object.entries(error?.errors ?? {}).map(
+     ([error, value]: any) => ({
+       [error]: value?.message,
+     })
+   );
+
+   return allErrors;
+ };
