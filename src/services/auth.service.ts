@@ -4,6 +4,7 @@ type UserDataType = {
   username: string;
   email: string;
   password: string;
+  salt: string;
 };
 
 export const registerUser = async (userData: UserDataType) => {
