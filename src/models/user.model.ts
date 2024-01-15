@@ -1,6 +1,6 @@
 // Import necessary modules and types
 import mongoose, { Schema, Document } from "mongoose";
-import { emailInvalid } from "../utils/validation.util";
+import { emailInvalid, passwordInvalid } from "../utils/validation.util";
 
 // Define a schema
 const userSchema = new Schema({
@@ -21,9 +21,13 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: [true, "Password is required"],
-    minlength: [8, "Password must be at least 8 characters long"],
+    validate: [
+      (password: string) => !passwordInvalid(password, 8),
+      "Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, one number, and one special character",
+    ],
+    select: false,
   },
-  salt: { type: String, required: true },
+  salt: { type: String, required: true, select: false },
 });
 
 interface IUser extends Document {
