@@ -23,9 +23,10 @@ export const register = async (req: Request, res: Response) => {
   }
 
   if (passwordsDontMatch(password, repeatPassword)) {
-    return res
-      .status(400)
-      .json({ successful: false, message: "Passwords do not match" });
+    return res.status(400).json({
+      successful: false,
+      errors: [{ password: "Passwords don't match" }],
+    });
   }
 
   try {
@@ -47,7 +48,6 @@ export const register = async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).json({
       successful: false,
-      message: "Registration failed",
       errors: parseMongooseValidationErrors(error),
     });
   }
