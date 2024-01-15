@@ -28,7 +28,7 @@ const userSchema = new Schema({
     ],
     select: false,
   },
-  salt: { type: String, required: true, select: false },
+  salt: { type: String, select: false },
 });
 
 interface IUser extends Document {
