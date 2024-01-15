@@ -1,6 +1,7 @@
 // Import necessary modules and types
 import mongoose, { Schema, Document } from "mongoose";
 import { emailInvalid, passwordInvalid } from "../utils/validation.util";
+import bcrypt from "bcrypt";
 
 // Define a schema
 const userSchema = new Schema({
@@ -36,6 +37,12 @@ interface IUser extends Document {
   password: string;
   salt: string;
 }
+
+userSchema.pre("save", async function (next) {
+  this.salt = await bcrypt.genSalt();
+  this.password = await bcrypt.hash(this.password, this.salt);
+  next();
+});
 
 const User = mongoose.model<IUser>("User", userSchema);
 
