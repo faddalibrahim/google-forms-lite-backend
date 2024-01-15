@@ -1,38 +1,40 @@
 import { Request, Response } from "express";
-import User from "../models/user.model";
+import * as AuthService from "../services/auth.service";
 
 export const register = async (req: Request, res: Response) => {
-  const { username, email, password, salt } = req.body;
+  const { username, email, password, repeatPassword } = req.body;
 
-  if (!username || !email || !password || !salt) {
+  // missing fields
+  if (!username || !email || !password || !repeatPassword) {
     return res
       .status(400)
       .json({ successful: false, message: "Missing required fields" });
   }
 
+  // password length, passwords match, contains required characters
+  if (password.length < 6) {
+    return res
+      .status(400)
+      .json({
+        successful: false,
+        message: "Password must be at least 6 characters",
+      });
+  }
+
+  // email validation
+  if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+    return res
+      .status(400)
+      .json({ successful: false, message: "Invalid email address" });
+  }
+
   try {
-    // const user = new User({
-    //   username,
-    //   email,
-    //   password,
-    //   salt,
-    // });
-
-    //   user.save();
-      
-
-    const savedUser = await User.create({
-      username,
-      email,
-      password,
-      salt,
-    })
-
+    await AuthService.registerUser({ username, email, password });
 
     res.status(201).json({
       successful: true,
       message: "Registration successful",
-      user: savedUser,
+      user: { username, email },
     });
   } catch (err) {
     console.log(err);
