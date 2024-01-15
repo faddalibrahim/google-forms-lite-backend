@@ -15,6 +15,7 @@ interface IQuestion {
   question: string;
   type: string; // radio, checkbox, text, textarea, date etc
   options?: IOption[]; // only for radio and checkbox
+  answer?: Types.Array<string>; // empty for unanswered non-required questions; single entry for single choice questions; multiple entries for multiple choice questions
 }
 
 interface IOption {
