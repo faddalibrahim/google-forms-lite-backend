@@ -13,3 +13,11 @@ export const registerUser = async (userData: UserDataType) => {
     throw error;
   }
 };
+
+export const loginUser = async (email: string, password: string) => {
+  try {
+    return await User.login(email, password);
+  } catch (error) {
+    throw error;
+  }
+}
