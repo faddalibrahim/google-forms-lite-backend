@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const dbConnection = async () => {
-  const dbURI = "mongodb://localhost:27017/xyforms";
+  const dbURI = process.env.DATABASE_URI || "mongodb://localhost:27017/xyforms";
   try {
     const connection = await mongoose.connect(dbURI);
     return connection;
