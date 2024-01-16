@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import express, { Request, Response } from "express";
 import v1Router from "./routes/v1";
 import dbConnection from "./config/db-config";
@@ -16,13 +19,13 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/v1", v1Router);
 
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 
 dbConnection()
   .then(() => {
     console.log("Connected to the database!");
-    app.listen(port, () => {
-      console.log(`Server is running at http://localhost:${port}`);
+    app.listen(PORT, () => {
+      console.log(`Server is running at http://localhost:${PORT}`);
     });
   })
   .catch((error) => {
