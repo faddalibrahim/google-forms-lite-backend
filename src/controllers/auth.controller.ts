@@ -56,12 +56,34 @@ export const register = async (req: Request, res: Response) => {
   }
 };
 
-export const login = (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
-  // Perform registration logic (validate inputs, save to database, etc.)
-  // For simplicity, just log the received data in this example
-  console.log("Login details:", { email, password });
+  let missingFields = getMissingFields(req.body, ["email", "password"]);
 
-  res.json({ successful: true, message: "Login successful" });
+  if (missingFields.length > 0) {
+    return res.status(400).json({
+      successful: false,
+      errors: missingFields.map((field) => ({
+        [field]: `${field} is required`,
+      })),
+    });
+  }
+
+  try {
+    const user = await AuthService.loginUser(email, password);
+    res.json({
+      successful: true,
+      user: {
+        id: user._id,
+        username: user.username,
+        email: user.email,
+      },
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      successful: false,
+      error: error.message,
+    });
+  }
 };
