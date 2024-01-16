@@ -1,5 +1,5 @@
 // Import necessary modules and types
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document, Model } from "mongoose";
 import { emailInvalid, passwordInvalid } from "../utils/validation.util";
 import bcrypt from "bcrypt";
 
@@ -26,9 +26,7 @@ const userSchema = new Schema({
       (password: string) => !passwordInvalid(password, 8),
       "Password must be at least 8 characters and contain at least one uppercase letter, one lowercase letter, one number, and one special character",
     ],
-    select: false,
   },
-  salt: { type: String, select: false },
 });
 
 interface IUser extends Document {
@@ -39,11 +37,28 @@ interface IUser extends Document {
 }
 
 userSchema.pre("save", async function (next) {
-  this.salt = await bcrypt.genSalt();
-  this.password = await bcrypt.hash(this.password, this.salt);
+  const salt = await bcrypt.genSalt();
+  this.password = await bcrypt.hash(this.password, salt);
   next();
 });
 
-const User = mongoose.model<IUser>("User", userSchema);
+interface IUserModel extends Model<IUser> {
+  login(email: string, password: string): Promise<IUser>;
+}
+
+// static method to login user
+userSchema.statics.login = async function (email: string, password: string) {
+  const user = await this.findOne({ email });
+  if (user) {
+    const auth = await bcrypt.compare(password, user.password);
+    if (auth) {
+      return user;
+    }
+    throw Error("incorrect email or password");
+  }
+  throw new Error("incorrect email or password");
+};
+
+const User = mongoose.model<IUser, IUserModel>("User", userSchema);
 
 export default User;
