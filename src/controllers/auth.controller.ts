@@ -5,6 +5,15 @@ import {
   parseMongooseValidationErrors,
   getMissingFields,
 } from "../utils/validation.util";
+import jwt from "jsonwebtoken";
+
+const maxAge = 3 * 24 * 60 * 60;
+const JWT_SECRET = process.env.JWT_SECRET || "";
+const createToken = (id: string) => {
+  return jwt.sign({ id }, JWT_SECRET, {
+    expiresIn: maxAge,
+  });
+};
 
 export const register = async (req: Request, res: Response) => {
   const { username, email, password, repeatPassword } = req.body;
@@ -72,7 +81,11 @@ export const login = async (req: Request, res: Response) => {
 
   try {
     const user = await AuthService.loginUser(email, password);
-    res.json({
+
+    const token = createToken(user._id);
+    res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
+
+    res.status(200).json({
       successful: true,
       user: {
         id: user._id,
