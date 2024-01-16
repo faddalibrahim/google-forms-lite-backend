@@ -1,11 +1,16 @@
 import express, { Request, Response } from "express";
 import v1Router from "./routes/v1";
 import dbConnection from "./config/db-config";
+import cookieParser from "cookie-parser";
 
 const app = express();
+
+// middlewares
 app.use(express.json());
+app.use(cookieParser());
 
 app.get("/", (req: Request, res: Response) => {
+  console.log(req.cookies);
   res.json({ app: "xyforms-api", "api-version": "1.0" });
 });
 
