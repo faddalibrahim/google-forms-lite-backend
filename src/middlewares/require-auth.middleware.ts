@@ -25,7 +25,10 @@ const requireAuth = (req: Request, res: Response, next: NextFunction) => {
       }
     );
   } else {
-    res.redirect("/login");
+    res.status(400).json({
+      successful: false,
+      message: "Token not provided",
+    });
   }
 };
 
