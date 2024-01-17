@@ -1,5 +1,6 @@
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
+import User from "../models/user.model";
 
 export const requireAuth = (
   req: Request,
@@ -35,3 +36,22 @@ export const requireAuth = (
     });
   }
 };
+
+export const getCurrentUser = (req: Request, res: Response, next: NextFunction) => {
+  const token = req.cookies.jwt;
+  const JWT_SECRET = process.env.JWT_SECRET || "";
+  if (token) {
+    jwt.verify(token, JWT_SECRET, async (err: JsonWebTokenError | null, decodedToken: any) => {
+      if (err) {
+        res.locals.user = null;
+        next()
+      }
+      let user = await User.findById(decodedToken.id)
+      res.locals.user = user;
+      next()
+     });
+  }
+
+  res.locals.user = null;
+  next();
+}
