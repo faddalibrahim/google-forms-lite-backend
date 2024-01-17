@@ -21,17 +21,15 @@ export const requireAuth = (
             successful: false,
             message: "Token is not valid",
           });
-        } else {
-          let user = await User.findById(decodedToken.id);
-          res.locals.user = user;
-          next();
         }
+        let user = await User.findById(decodedToken.id);
+        res.locals.user = user;
+        next();
       }
     );
-  } else {
-    res.status(400).json({
-      successful: false,
-      message: "Token not provided",
-    });
   }
+  res.status(400).json({
+    successful: false,
+    message: "Token not provided",
+  });
 };
