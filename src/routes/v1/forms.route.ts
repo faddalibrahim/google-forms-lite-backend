@@ -11,6 +11,6 @@ router.get("/", formsController.getAllForms);
 router.get("/:id", formsController.getForm);
 router.post("/", formsController.createForm);
 router.delete("/:id", formsController.deleteForm);
-router.put("/:id", formsController.updateForm);
+router.patch("/:id", formsController.patchForm);
 
 export default router;

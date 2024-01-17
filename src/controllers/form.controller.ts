@@ -40,7 +40,7 @@ export const deleteForm = (req: Request, res: Response) => {
 };
 
 // update form
-export const updateForm = (req: Request, res: Response) => {
+export const patchForm = (req: Request, res: Response) => {
   const { id } = req.params;
   const { form } = req.body;
   if (!form) {
