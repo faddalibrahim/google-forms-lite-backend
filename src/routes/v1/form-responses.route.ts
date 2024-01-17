@@ -1,6 +1,6 @@
 import express, { Router, Request, Response } from "express";
 import * as formResponsesController from "../../controllers/form-response.controller";
-import requireAuth from "../../middlewares/require-auth.middleware";
+import {requireAuth} from "../../middlewares/auth.middleware";
 
 const router: Router = express.Router();
 
