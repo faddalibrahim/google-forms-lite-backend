@@ -10,7 +10,7 @@ interface IForm extends Document {
 
 const formSchema = new Schema<IForm>({
   _userId: { type: Types.ObjectId, required: true },
-  name: { type: String, required: true, default: "Untitled Form" },
+  name: { type: String, default: "Untitled Form" },
   isPublished: { type: Boolean, default: false },
   isLocked: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },

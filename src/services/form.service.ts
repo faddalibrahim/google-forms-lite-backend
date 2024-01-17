@@ -1,18 +1,16 @@
 import Form from "../models/form.model";
 
-export const getForms = async () => {
+export const getForms = async (userId: string) => {
   try {
-    const forms = await Form.find();
-    return forms;
+    return await Form.find({ _userId: userId }).sort({ createdAt: -1 });
   } catch (error) {
     throw error;
   }
 };
 
-export const getFormById = async (id: string) => {
+export const getForm = async (formId: string, userId: string) => {
   try {
-    const form = await Form.findById(id);
-    return form;
+    return await Form.findOne({ _id: formId, _userId: userId });
   } catch (error) {
     throw error;
   }
@@ -20,19 +18,20 @@ export const getFormById = async (id: string) => {
 
 export const createForm = async (form: any) => {
   try {
-    const newForm = new Form(form);
-    await newForm.save();
-    return newForm;
+    return await Form.create(form);
   } catch (error) {
     throw error;
   }
 };
 
-export const patchForm = async (id: string, patch: { [key: string]: any }) => {
+export const patchForm = async (
+  id: string,
+  formPatch: { [key: string]: any }
+) => {
   try {
     const updatedForm = await Form.findByIdAndUpdate(
       id,
-      { $set: patch },
+      { $set: formPatch },
       { new: true }
     );
     return updatedForm;
@@ -43,8 +42,7 @@ export const patchForm = async (id: string, patch: { [key: string]: any }) => {
 
 export const deleteForm = async (id: string) => {
   try {
-    const deletedForm = await Form.findByIdAndDelete(id);
-    return deletedForm;
+    return await Form.findByIdAndDelete(id);
   } catch (error) {
     throw error;
   }
