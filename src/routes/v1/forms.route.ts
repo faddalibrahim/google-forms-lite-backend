@@ -7,7 +7,7 @@ const router: Router = express.Router();
 
 router.use(requireAuth);
 
-router.get("/", formsController.getAllForms);
+router.get("/", formsController.getForms);
 router.get("/:id", formsController.getForm);
 router.post("/", formsController.createForm);
 router.delete("/:id", formsController.deleteForm);

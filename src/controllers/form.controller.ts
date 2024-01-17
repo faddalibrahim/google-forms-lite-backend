@@ -1,9 +1,23 @@
 import { Request, Response } from "express";
 import * as FormService from "../services/form.service";
 
-export const getAllForms = async (req: Request, res: Response) => {
+export const getForms = async (req: Request, res: Response) => {
+  console.log(req.query);
+
+  const { page, pageSize } = req.query;
+  // make sure page and pageSize are present and are numbers
+  if (!page || !pageSize || !Number(page) || !Number(pageSize)) {
+    return res
+      .status(400)
+      .json({ successful: false, error: "invalid query parameters" });
+  }
+
   try {
-    const forms = await FormService.getForms(res.locals.user.id);
+    const skip = (Number(page) - 1) * Number(pageSize);
+    const limit = Number(pageSize);
+    const userId = res.locals.user.id;
+
+    const forms = await FormService.getForms(userId, skip, limit);
     if (!forms) {
       return res
         .status(400)

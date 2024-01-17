@@ -1,8 +1,11 @@
 import Form from "../models/form.model";
 
-export const getForms = async (userId: string) => {
+export const getForms = async (userId: string, skip: number, limit: number) => {
   try {
-    return await Form.find({ _userId: userId }).sort({ createdAt: -1 });
+    return await Form.find({ _userId: userId })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
   } catch (error) {
     throw error;
   }
