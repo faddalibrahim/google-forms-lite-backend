@@ -6,6 +6,5 @@ const router: Router = express.Router();
 router.get("/:id", formContentController.getFormContent);
 router.post("/", formContentController.createFormContent);
 router.put("/:id", formContentController.updateFormContent);
-router.delete("/:id", formContentController.deleteFormContent);
 
 export default router;
