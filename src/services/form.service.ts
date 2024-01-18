@@ -45,7 +45,8 @@ export const patchForm = async (
 
 export const deleteForm = async (id: string) => {
   try {
-    return await Form.findByIdAndDelete(id);
+    // return await Form.findByIdAndDelete(id);
+    return await Form.findOneAndDelete({ _id: id });
   } catch (error) {
     throw error;
   }
