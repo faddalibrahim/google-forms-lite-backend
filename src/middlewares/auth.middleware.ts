@@ -1,7 +1,12 @@
 import jwt, { JsonWebTokenError } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
+import User from "../models/user.model";
 
-const requireAuth = (req: Request, res: Response, next: NextFunction) => {
+export const requireAuth = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const token = req.cookies.jwt;
   const JWT_SECRET = process.env.JWT_SECRET || "";
 
@@ -10,16 +15,15 @@ const requireAuth = (req: Request, res: Response, next: NextFunction) => {
     jwt.verify(
       token,
       JWT_SECRET,
-      (err: JsonWebTokenError | null, decodedToken: any) => {
+      async (err: JsonWebTokenError | null, decodedToken: any) => {
         if (err) {
-          console.log(err.message);
-
           res.status(400).json({
             successful: false,
             message: "Token is not valid",
           });
         } else {
-          console.log(decodedToken);
+          let user = await User.findById(decodedToken.id);
+          res.locals.user = user;
           next();
         }
       }
@@ -31,5 +35,3 @@ const requireAuth = (req: Request, res: Response, next: NextFunction) => {
     });
   }
 };
-
-export default requireAuth;

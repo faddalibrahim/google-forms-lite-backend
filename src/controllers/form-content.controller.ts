@@ -1,63 +1,69 @@
 import { Request, Response } from "express";
-import FormContent from "../models/form-content.model";
+import * as FormContentService from "../services/form-content.service";
 
-export const getFormContent = (req: Request, res: Response) => {
-  res.json({
-    successful: true,
-    message: "Form content retrieved successfully!",
-    data: {},
-  });
-};
+export const getFormContent = async (req: Request, res: Response) => {
+  const { id: formId } = req.params;
 
-export const updateFormContent = (req: Request, res: Response) => {
-  FormContent.findOneAndUpdate({ _id: req.params.id }, req.body).then(
-    (formContent) => {
-      if (!formContent) {
-        return res
-          .status(400)
-          .json({ successful: false, error: "No form content found" });
-      } else {
-        res.json({
-          successful: true,
-          message: "Form content updated successfully!",
-          data: formContent,
-        });
-      }
+  if (!formId) {
+    return res
+      .status(400)
+      .json({ successful: false, error: "No form content id provided" });
+  }
+
+  try {
+    const formContent = await FormContentService.getFormContent(formId);
+    if (!formContent) {
+      return res
+        .status(400)
+        .json({ successful: false, error: "No form content found" });
+    } else {
+      res.json({ successful: true, data: formContent });
     }
-  );
-
-  res.json({
-    successful: true,
-    message: "Form content updated successfully!",
-    data: {},
-  });
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ successful: false, error: "Error getting form content" });
+  }
 };
 
-export const deleteFormContent = (req: Request, res: Response) => {
-  res.json({
-    successful: true,
-    message: "Form content deleted successfully!",
-    data: {},
-  });
-};
+export const updateFormContent = async (req: Request, res: Response) => {
+  const { id:formId } = req.params;
 
-export const createFormContent = (req: Request, res: Response) => {
-  const { formContent } = req.body;
+  if (!formId) {
+    return res
+      .status(400)
+      .json({ successful: false, error: "No form content id provided" });
+  }
 
-  if (!formContent) {
+  if (!req.body) {
     return res
       .status(400)
       .json({ successful: false, error: "No form content received" });
   }
 
-  //   const newFormContent = new FormContent(formContent);
-  //   newFormContent.save();
+  try {
+    const formContent = await FormContentService.updateFormContent(formId,req.body);
+    res.json({ successful: true, data: formContent });
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ successful: false, error: "Error updating form content" });
+  }
+};
 
-  FormContent.create(formContent);
+export const createFormContent = async (req: Request, res: Response) => {
+  if (!req.body) {
+    return res
+      .status(400)
+      .json({ successful: false, error: "No form content received" });
+  }
 
-  res.json({
-    successful: true,
-    message: "Form content created successfully!",
-    data: formContent,
-  });
+  try {
+    const formContent = await FormContentService.createFormContent(req.body);
+    res.status(201).json({ successful: true, data: formContent });
+  } catch (error) {
+    return res
+      .status(400)
+      .json({ successful: false, error: "Error creating form content" });
+  }
 };

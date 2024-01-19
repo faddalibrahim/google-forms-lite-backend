@@ -1,7 +1,7 @@
 import mongoose, { Schema, Types, Document } from "mongoose";
 
 interface IFormResponse extends Document {
-  _formId: { type: typeof Types.ObjectId; required: boolean };
+  __formId: { type: typeof Types.ObjectId; required: boolean };
   sections: ISection[];
 }
 
@@ -24,7 +24,7 @@ interface IOption {
 }
 
 const formResponseSchema = new Schema<IFormResponse>({
-  _formId: { type: Types.ObjectId, required: true },
+  __formId: { type: Types.ObjectId, required: true },
   sections: { type: Schema.Types.Mixed, required: true },
 });
 
